@@ -14,4 +14,4 @@ A beginner capstone project: the classic Hangman game coded in Python.
 Requires Python 3.x. Clone this repo and run:
 
 ```bash
-python main.py
+python hangman.py
