@@ -1,8 +1,8 @@
 # Hangman Game (Python)
 
 ## Description
-A beginner capstone project: the classic Hangman game coded in Python.
-
+The classic Hangman game coded in Python.
+Neeeeeeeeeeeeeeeeeeeeed to change the description.
 ## Features
 - Random selection of fruit names as secret words
 - Dynamic guess allowance (word length + 2)
