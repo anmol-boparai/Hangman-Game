@@ -1,89 +1,71 @@
-# Python Program to illustrate
-# Hangman Game
 import random
 from collections import Counter
 
-# Load words from words.txt
 def load_words(filename='words.txt'):
+    """Load words from a file."""
     try:
         with open(filename, 'r') as file:
             words = file.read().splitlines()
-            return [word.strip() for word in words if word.strip()]
+            return [word.strip().lower() for word in words if word.strip()]
     except FileNotFoundError:
-        print("Error: words.txt file not found.")
-        exit()
+        print(f"Error: {filename} not found.")
+        return []
 
-words = load_words()
-word = random.choice(words)
+def display_word(word, guessed_letters):
+    """Display the word with guessed letters revealed."""
+    display = []
+    for letter in word:
+        if letter in guessed_letters:
+            display.append(letter)
+        else:
+            display.append('_')
+    return ' '.join(display)
+
+def play_game():
+    """Main game loop."""
+    words = load_words()
+    if not words:
+        print("No words available. Exiting.")
+        return
+
+    word = random.choice(words)
+    guessed_letters = set()
+    chances = len(word) + 2
+    print("Guess the word! HINT: It's a random word from the dictionary.")
+    print(display_word(word, guessed_letters))
+
+    while chances > 0:
+        guess = input("\nEnter a letter to guess: ").lower()
+        
+        if len(guess) != 1 or not guess.isalpha():
+            print("Please enter a single letter.")
+            continue
+        
+        if guess in guessed_letters:
+            print("You already guessed that letter.")
+            continue
+        
+        guessed_letters.add(guess)
+        
+        if guess in word:
+            print("Correct!")
+        else:
+            print("Wrong!")
+            chances -= 1
+        
+        current_display = display_word(word, guessed_letters)
+        print(current_display)
+        
+        if all(letter in guessed_letters for letter in word):
+            print("\nCongratulations, You won!")
+            print(f"The word was: {word}")
+            return
+    
+    print("\nYou lost! Try again.")
+    print(f"The word was: {word}")
 
 if __name__ == '__main__':
-    print('Guess the word! HINT: word is a name of a fruit')
-
-    for i in word:
-        # For printing the empty spaces for letters of the word
-        print('_', end=' ')
-    print()
-
-    playing = True
-    # List for storing the letters guessed by the player
-    letterGuessed = ''
-    chances = len(word) + 2
-    correct = 0
-    flag = 0
     try:
-        while (chances != 0) and flag == 0:  # Flag is updated when the word is correctly guessed
-            print()
-            chances -= 1
-
-            try:
-                guess = str(input('Enter a letter to guess: '))
-            except:
-                print('Enter only a letter!')
-                continue
-
-            # Validation of the guess
-            if not guess.isalpha():
-                print('Enter only a LETTER')
-                continue
-            elif len(guess) > 1:
-                print('Enter only a SINGLE letter')
-                continue
-            elif guess in letterGuessed:
-                print('You have already guessed that letter')
-                continue
-
-            # If letter is guessed correctly
-            if guess in word:
-                # k stores the number of times the guessed letter occurs in the word
-                k = word.count(guess)
-                for _ in range(k):
-                    letterGuessed += guess  # The guessed letter is added as many times as it occurs
-
-            # Print the word
-            for char in word:
-                if char in letterGuessed and (Counter(letterGuessed) != Counter(word)):
-                    print(char, end=' ')
-                    correct += 1
-                # If user has guessed all the letters
-                # Once the correct word is guessed fully,
-                elif (Counter(letterGuessed) == Counter(word)):
-                    # the game ends, even if chances remain
-                    print("The word is: ", end=' ')
-                    print(word)
-                    flag = 1
-                    print('Congratulations, You won!')
-                    break  # To break out of the for loop
-                    break  # To break out of the while loop
-                else:
-                    print('_', end=' ')
-
-        # If user has used all of his chances
-        if chances <= 0 and (Counter(letterGuessed) != Counter(word)):
-            print()
-            print('You lost! Try again..')
-            print('The word was {}'.format(word))
-
+        play_game()
     except KeyboardInterrupt:
-        print()
-        print('Bye! Try again.')
-        exit()
+        print("\nGame interrupted. Bye!")
