@@ -3,13 +3,18 @@
 import random
 from collections import Counter
 
-someWords = '''apple banana mango strawberry 
-orange grape pineapple apricot lemon coconut watermelon 
-cherry papaya berry peach lychee muskmelon'''
+# Load words from words.txt
+def load_words(filename='words.txt'):
+    try:
+        with open(filename, 'r') as file:
+            words = file.read().splitlines()
+            return [word.strip() for word in words if word.strip()]
+    except FileNotFoundError:
+        print("Error: words.txt file not found.")
+        exit()
 
-someWords = someWords.split(' ')
-# randomly choose a secret word from our "someWords" LIST.
-word = random.choice(someWords)
+words = load_words()
+word = random.choice(words)
 
 if __name__ == '__main__':
     print('Guess the word! HINT: word is a name of a fruit')
