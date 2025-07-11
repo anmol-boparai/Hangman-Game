@@ -93,14 +93,14 @@ def play_game():
     print("\n=== Welcome to Hangman! ===")
     print("Guess the word! Type 'hint' for a clue.")
     print(HANGMAN_ART[wrong_guesses])
-    print(display_word(word, guessed_letters))
+    print("\nWord:", display_word(word, guessed_letters))
 
     while wrong_guesses < max_wrong_guesses:
         guess = input("\nEnter a letter (or 'hint'): ").lower().strip()
 
         if guess == 'hint':
             if used_hints < max_hints:
-                print("\n" + get_hint(word))
+                print("\nHint:", get_hint(word))
                 used_hints += 1
             else:
                 print("No more hints left!")
@@ -123,15 +123,15 @@ def play_game():
             wrong_guesses += 1
 
         print(HANGMAN_ART[wrong_guesses])
-        print(display_word(word, guessed_letters))
+        print("\nWord:", display_word(word, guessed_letters))
         print(f"Wrong guesses left: {max_wrong_guesses - wrong_guesses}")
 
         if all(letter in guessed_letters for letter in word):
-            print("\n Congratulations, You won!")
+            print("\nCongratulations, You won!")
             print(f"The word was: {word}")
             return
 
-    print("\n Game Over! You lost.")
+    print("\nGame Over! You lost.")
     print(f"The word was: {word}")
 
 if __name__ == '__main__':
