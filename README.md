@@ -27,4 +27,4 @@ To adjust difficulty:
 Requires Python 3 and terminal.
 
 ```bash
-python hangman.py
+python3 hangman.py
